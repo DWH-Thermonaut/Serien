@@ -1,5 +1,5 @@
-﻿import { userId, decryptEntry } from './vault-crypto.js?v=1';
-import { syncApp, hasApp, clearApp, appUrl } from './repo-sync.js?v=1';
+﻿import { userId, decryptEntry } from './vault-crypto.js?v=2';
+import { syncApp, hasApp, clearApp, appUrl } from './repo-sync.js?v=2';
 
 const SESSION_KEY = 'vault:session';
 const base = new URL('./', location.href).href;
@@ -46,11 +46,17 @@ function dropSession()
   try { localStorage.removeItem(SESSION_KEY); sessionStorage.removeItem(SESSION_KEY); } catch { }
 }
 
+function timeout(ms, text)
+{
+  return new Promise((_, reject) => setTimeout(() => reject(new Error(text)), ms));
+}
+
 async function workerReady()
 {
-  if (!('serviceWorker' in navigator)) { throw new Error('Dieser Browser unterstützt keine Service Worker.'); }
-  await navigator.serviceWorker.register('sw.js');
-  await navigator.serviceWorker.ready;
+  if (!('serviceWorker' in navigator)) { throw new Error('Dieser Browser unterstützt keine Service Worker (privates Fenster?).'); }
+  try { await navigator.serviceWorker.register('sw.js'); }
+  catch (err) { throw new Error('sw.js konnte nicht geladen werden – liegt sie im Repository „Serien“? (' + err.message + ')'); }
+  await Promise.race([navigator.serviceWorker.ready, timeout(15000, 'Service Worker startet nicht. Seite neu laden (Strg + Umschalt + R).')]);
 }
 
 async function openApp(session, force)
@@ -60,12 +66,12 @@ async function openApp(session, force)
   try
   {
     await workerReady();
-    const result = await syncApp(session, base, progress, force);
+    const result = await Promise.race([syncApp(session, base, progress, force), timeout(120000, 'Zeitüberschreitung beim Laden aus GitHub.')]);
     status(result.updated ? result.updated + ' Dateien geladen – starte …' : 'Dashboard ist aktuell – starte …');
   }
   catch (err)
   {
-    const offline = !navigator.onLine || err instanceof TypeError;
+    const offline = !navigator.onLine || err.name === 'TypeError' || err.name === 'TimeoutError';
     if (offline && await hasApp(base)) { status('Offline – starte gespeicherte Version …'); }
     else
     {
@@ -89,8 +95,8 @@ async function login(e)
   status('Prüfe Anmeldung …');
   try
   {
-    const res = await fetch('users.json', { cache: 'no-store' });
-    if (!res.ok) { throw new Error('users.json nicht gefunden.'); }
+    const res = await fetch('users.json', { cache: 'no-store', signal: AbortSignal.timeout(15000) });
+    if (!res.ok) { throw new Error('users.json nicht gefunden (HTTP ' + res.status + ').'); }
     const users = (await res.json()).users || {};
     const entry = users[await userId(name)];
     if (!entry) { throw new Error('denied'); }

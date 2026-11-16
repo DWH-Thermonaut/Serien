@@ -24,9 +24,9 @@ function encodePath(path)
 async function gh(path, token, raw = false)
 {
   const headers = { Authorization: 'Bearer ' + token, Accept: raw ? 'application/vnd.github.raw' : 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' };
-  const res = await fetch(API + path, { headers, cache: 'no-store' });
+  const res = await fetch(API + path, { headers, cache: 'no-store', signal: AbortSignal.timeout(30000) });
   if (res.status === 401) { throw new Error('GitHub-Token ungültig oder abgelaufen.'); }
-  if (res.status === 403 || res.status === 404) { throw new Error('Kein Zugriff auf das private Repository (Token-Rechte prüfen).'); }
+  if (res.status === 403 || res.status === 404) { throw new Error('Kein Zugriff auf das private Repository (HTTP ' + res.status + '). Repository-Name, Branch und Token-Rechte prüfen.'); }
   if (!res.ok) { throw new Error('GitHub-Fehler ' + res.status); }
   return raw ? res : res.json();
 }

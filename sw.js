@@ -1,10 +1,12 @@
-﻿const SHELL_CACHE = 'serien-login-v1';
+﻿const SHELL_CACHE = 'serien-login-v2';
 const APP_CACHE = 'vault-app';
-const SHELL = ['./', './index.html', './login.css?v=1', './login.js?v=1', './vault-crypto.js?v=1', './repo-sync.js?v=1', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png'];
+const SHELL = ['./', './index.html', './login.css?v=2', './login.js?v=2', './vault-crypto.js?v=2', './repo-sync.js?v=2', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png'];
 
 self.addEventListener('install', e =>
 {
-  e.waitUntil(caches.open(SHELL_CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open(SHELL_CACHE)
+    .then(c => Promise.allSettled(SHELL.map(path => c.add(path))))
+    .then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', e =>
