@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#070a18">
+<meta name="robots" content="noindex, nofollow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Serien Streamer">
+<title>DWH’s Serien Streamer – Anmeldung</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="login.css?v=1">
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+<main class="card">
+  <div class="logo">
+    <svg class="logo-icon" viewBox="0 0 64 56" aria-hidden="true">
+      <path d="M22 4 L32 14 L42 4" />
+      <rect x="4" y="14" width="56" height="38" rx="9" />
+      <rect x="11" y="21" width="34" height="24" rx="4" class="screen" />
+      <path d="M24 27 L24 39 L34 33 Z" class="play" />
+      <circle cx="52" cy="25" r="2.6" class="knob" />
+      <circle cx="52" cy="34" r="2.6" class="knob" />
+    </svg>
+    <span class="logo-text">
+      <span class="logo-title">DWH’s Serien</span>
+      <span class="logo-sub">STREAMER</span>
+    </span>
+  </div>
+
+  <form id="form" autocomplete="on">
+    <label class="field">
+      <span>Benutzer</span>
+      <input id="user" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+    </label>
+    <label class="field">
+      <span>Passwort</span>
+      <input id="pass" name="password" type="password" autocomplete="current-password" required>
+    </label>
+    <label class="check">
+      <input id="remember" type="checkbox" checked>
+      <span>Angemeldet bleiben</span>
+    </label>
+    <button id="submit" type="submit">Anmelden</button>
+  </form>
+
+  <div class="progress hidden"><div id="bar"></div></div>
+  <p id="status" class="status" role="status"></p>
+</main>
+<script>
+  if (location.protocol === 'file:') { document.getElementById('status').textContent = 'Bitte über GitHub Pages öffnen, nicht als Datei.'; }
+</script>
+<script type="module" src="login.js?v=1"></script>
+</body>
+</html>

@@ -1,0 +1,239 @@
+﻿:root
+{
+  color-scheme: dark;
+  --text: #f2f4f8;
+  --muted: #9aa1b8;
+  --neon: #e9ff3b;
+  --lime: #8dff5a;
+  --pink: #ff3fa8;
+  --cyan: #38e1ff;
+  --gold-line: rgba(233, 255, 59, 0.38);
+  --glow: 0 0 14px rgba(233, 255, 59, 0.35);
+}
+
+*
+{
+  box-sizing: border-box;
+}
+
+body
+{
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: calc(env(safe-area-inset-top) + 20px) 18px calc(env(safe-area-inset-bottom) + 20px);
+  color: var(--text);
+  background: #070a18;
+  font: 16px/1.4 system-ui, -apple-system, "SF Pro Text", "Segoe UI", sans-serif;
+}
+
+.bg
+{
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(60% 40% at 15% 25%, rgba(56, 225, 255, 0.20), transparent 70%),
+    radial-gradient(55% 45% at 85% 60%, rgba(255, 63, 168, 0.22), transparent 70%),
+    radial-gradient(70% 50% at 50% 100%, rgba(139, 92, 246, 0.28), transparent 70%),
+    linear-gradient(180deg, #070a18 0%, #0b1030 55%, #120b2e 100%);
+}
+
+.hidden
+{
+  display: none !important;
+}
+
+.card
+{
+  width: min(100%, 420px);
+  padding: 28px 24px 22px;
+  border: 1.5px solid var(--gold-line);
+  border-radius: 22px;
+  background: rgba(12, 15, 34, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 0 40px rgba(139, 92, 246, 0.3);
+}
+
+.logo
+{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 26px;
+}
+
+.logo-icon
+{
+  width: 58px;
+  height: 50px;
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.logo-icon path:first-child
+{
+  stroke: var(--cyan);
+  filter: drop-shadow(0 0 3px var(--cyan));
+}
+
+.logo-icon rect
+{
+  stroke: var(--pink);
+  filter: drop-shadow(0 0 4px var(--pink));
+}
+
+.logo-icon .screen
+{
+  stroke: var(--neon);
+  filter: drop-shadow(0 0 3px var(--neon));
+}
+
+.logo-icon .play
+{
+  fill: var(--lime);
+  stroke: var(--lime);
+  stroke-width: 1.5;
+}
+
+.logo-icon .knob
+{
+  stroke: var(--cyan);
+  stroke-width: 2;
+}
+
+.logo-text
+{
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-title
+{
+  font-weight: 800;
+  font-size: 1.6rem;
+  background: linear-gradient(90deg, var(--neon), var(--lime));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 6px rgba(233, 255, 59, 0.45));
+}
+
+.logo-sub
+{
+  margin-top: 2px;
+  padding-top: 2px;
+  border-top: 2px solid var(--pink);
+  color: var(--pink);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.5em;
+  text-align: center;
+  text-shadow: 0 0 6px rgba(255, 63, 168, 0.7);
+}
+
+form
+{
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field
+{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.field input
+{
+  padding: 14px 16px;
+  border: 1.5px solid var(--gold-line);
+  border-radius: 14px;
+  background: rgba(7, 10, 24, 0.75);
+  color: var(--text);
+  font: inherit;
+  font-size: 1.05rem;
+}
+
+.field input:focus
+{
+  outline: 0;
+  border-color: var(--neon);
+  box-shadow: var(--glow);
+}
+
+.check
+{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+}
+
+.check input
+{
+  width: 20px;
+  height: 20px;
+  accent-color: var(--lime);
+}
+
+button
+{
+  margin-top: 6px;
+  padding: 15px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(120deg, #6d6bff, #b14dff 50%, var(--pink));
+  color: #fff;
+  font: inherit;
+  font-size: 1.05rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 0 22px rgba(255, 63, 168, 0.45);
+}
+
+button:disabled
+{
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.progress
+{
+  height: 6px;
+  margin-top: 18px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.progress > div
+{
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--neon), var(--lime));
+  box-shadow: 0 0 10px var(--lime);
+  transition: width 0.2s;
+}
+
+.status
+{
+  min-height: 1.4em;
+  margin: 14px 0 0;
+  color: var(--muted);
+  text-align: center;
+}
+
+.status.error
+{
+  color: #ff7a8a;
+}
